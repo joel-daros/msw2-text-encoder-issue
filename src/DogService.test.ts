@@ -16,12 +16,7 @@ it("returns the dog facts", async () => {
   server.use(
     http.get("/api/facts", () => {
       console.log("getDogFacts was intercepted by MSW");
-      return HttpResponse.json(
-        {
-          facts: ["fact1", "fact2"],
-        },
-        { status: 200 }
-      );
+      return HttpResponse.json(["fact1", "fact2"], { status: 200 });
     })
   );
   const result = await getDogFacts();
