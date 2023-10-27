@@ -8,9 +8,14 @@ beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
 afterAll(() => server.close());
 
+server.events.on("request:start", ({ request }) => {
+  console.log("MSW intercepted:", request.method, request.url);
+});
+
 it("returns the dog facts", async () => {
   server.use(
     http.get("/api/facts", () => {
+      console.log("getDogFacts was intercepted by MSW");
       return HttpResponse.json(
         {
           facts: ["fact1", "fact2"],
