@@ -20,11 +20,7 @@ it("returns the dog facts", async () => {
     })
   );
   // when this line is added, the test stuck and never finishes
-  jest.useFakeTimers({
-    // now: new Date(2023, 9, 15),
-    // doNotFake: ["setTimeout"],
-    legacyFakeTimers: true,
-  });
+  jest.useFakeTimers({ now: new Date(2023, 9, 15), doNotFake: ["setTimeout"] });
   //
 
   const result = await getDogFacts();
