@@ -12,10 +12,6 @@ server.events.on("request:start", ({ request }) => {
   console.log("MSW intercepted:", request.method, request.url);
 });
 
-// when this line is added, the test stuck and never finishes
-jest.useFakeTimers();
-//
-
 it("returns the dog facts", async () => {
   server.use(
     http.get("*/api/facts", () => {
@@ -23,6 +19,14 @@ it("returns the dog facts", async () => {
       return HttpResponse.json({ facts: ["fact1", "fact2"] });
     })
   );
+  // when this line is added, the test stuck and never finishes
+  jest.useFakeTimers({
+    // now: new Date(2023, 9, 15),
+    // doNotFake: ["setTimeout"],
+    legacyFakeTimers: true,
+  });
+  //
+
   const result = await getDogFacts();
   expect(result).toStrictEqual(["fact1", "fact2"]);
 });
