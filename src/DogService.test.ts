@@ -1,5 +1,5 @@
-import { setupServer } from "msw/node";
 import { HttpResponse, http } from "msw";
+import { setupServer } from "msw/node";
 import { getDogFacts } from "./DogService";
 
 const server = setupServer();
@@ -12,11 +12,15 @@ server.events.on("request:start", ({ request }) => {
   console.log("MSW intercepted:", request.method, request.url);
 });
 
+// when this line is added, the test stuck and never finishes
+jest.useFakeTimers();
+//
+
 it("returns the dog facts", async () => {
   server.use(
-    http.get("/api/facts", () => {
+    http.get("*/api/facts", () => {
       console.log("getDogFacts was intercepted by MSW");
-      return HttpResponse.json(["fact1", "fact2"], { status: 200 });
+      return HttpResponse.json({ facts: ["fact1", "fact2"] });
     })
   );
   const result = await getDogFacts();
