@@ -2,14 +2,34 @@ import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 import { getDogFacts } from "./DogService";
 
+const hardCodeNow = new Date(2023, 8, 1, 0, 0, 0, 0);
+
 const server = setupServer();
 
-beforeAll(() => server.listen());
-afterEach(() => server.resetHandlers());
+beforeAll(() => {
+  server.listen();
+  server.events.on("request:start", ({ request }) => {
+    console.log("MSW intercepted:", request.method, request.url);
+  });
+});
+
+beforeEach(() => {
+  // when this line is added, the test stuck and never finishes
+  jest.useFakeTimers({
+    now: hardCodeNow,
+    doNotFake: ["queueMicrotask"],
+  });
+  jest.resetModules();
+  //
+});
+
 afterAll(() => server.close());
 
-server.events.on("request:start", ({ request }) => {
-  console.log("MSW intercepted:", request.method, request.url);
+afterEach(() => {
+  jest.clearAllMocks();
+  jest.runOnlyPendingTimers();
+  jest.useRealTimers();
+  server.resetHandlers();
 });
 
 it("returns the dog facts", async () => {
@@ -19,9 +39,6 @@ it("returns the dog facts", async () => {
       return HttpResponse.json({ facts: ["fact1", "fact2"] });
     })
   );
-  // when this line is added, the test stuck and never finishes
-  jest.useFakeTimers({ now: new Date(2023, 9, 15), doNotFake: ["setTimeout"] });
-  //
 
   const result = await getDogFacts();
   expect(result).toStrictEqual(["fact1", "fact2"]);
