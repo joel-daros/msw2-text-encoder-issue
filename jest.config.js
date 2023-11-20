@@ -154,7 +154,7 @@ const config = {
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
   testEnvironmentOptions: {
-    customExportConditions: [""],
+    customExportConditions: [],
   },
 
   // Adds a location field to test results

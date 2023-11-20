@@ -2,8 +2,6 @@ import { HttpResponse, http } from "msw";
 import { setupServer } from "msw/node";
 import { getDogFacts } from "./DogService";
 
-const hardCodeNow = new Date(2023, 8, 1, 0, 0, 0, 0);
-
 const server = setupServer();
 
 beforeAll(() => {
@@ -16,7 +14,7 @@ beforeAll(() => {
 beforeEach(() => {
   // when this line is added, the test stuck and never finishes
   jest.useFakeTimers({
-    now: hardCodeNow,
+    now: new Date(2023, 8, 1),
     doNotFake: ["queueMicrotask"],
   });
   jest.resetModules();
@@ -26,9 +24,9 @@ beforeEach(() => {
 afterAll(() => server.close());
 
 afterEach(() => {
-  jest.clearAllMocks();
-  jest.runOnlyPendingTimers();
-  jest.useRealTimers();
+  // jest.clearAllMocks();
+  // jest.runOnlyPendingTimers();
+  // jest.useRealTimers();
   server.resetHandlers();
 });
 
