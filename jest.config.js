@@ -6,8 +6,6 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
 
 const config = {
-  // transformIgnorePatterns: ["node_modules/(?!xxx)/"],
-
   // All imported modules in your tests should be mocked automatically
   // automock: false,
 
