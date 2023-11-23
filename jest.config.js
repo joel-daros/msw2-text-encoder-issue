@@ -91,9 +91,9 @@ const config = {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   // moduleNameMapper: {},
-  moduleNameMapper: {
-    "^(\\.{1,2}/.*)\\.js$": "$1",
-  },
+  // moduleNameMapper: {
+  //   "^(\\.{1,2}/.*)\\.js$": "$1",
+  // },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
   // modulePathIgnorePatterns: [],
@@ -106,7 +106,8 @@ const config = {
 
   // A preset that is used as a base for Jest's configuration
   // preset: "ts-jest/presets/default-esm",
-  preset: "ts-jest/presets/js-with-ts-esm",
+  // preset: "ts-jest/presets/js-with-babel",
+  // preset: "ts-jest/presets/js-with-babel-esm",
 
   // Run tests from one or more projects
   // projects: undefined,
@@ -152,6 +153,7 @@ const config = {
   // The test environment that will be used for testing
   // testEnvironment: "jsdom",
   testEnvironment: "jest-environment-jsdom",
+  // testEnvironment: "node",
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -159,7 +161,7 @@ const config = {
     customExportConditions: [],
   },
 
-  extensionsToTreatAsEsm: [".ts"],
+  // extensionsToTreatAsEsm: [".ts"],
 
   // Adds a location field to test results
   // testLocationInResults: false,
@@ -185,19 +187,26 @@ const config = {
   // testRunner: "jest-circus/runner",
 
   // A map from regular expressions to paths to transformers
-  // transform: {
-  //   // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
-  //   // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
-  //   "^.+\\.tsx?$": [
-  //     "ts-jest",
-  //     {
-  //       useESM: true,
-  //     },
-  //   ],
-  // },
+  transform: {
+    // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
+    // '^.+\\.m?[tj]sx?$' to process js/ts/mjs/mts with `ts-jest`
+    // "^.+\\.tsx?$": [
+    //   "ts-jest",
+    //   {
+    //     useESM: true,
+    //   },
+    // ],
+    "^.+\\.[tj]sx?$": ["babel-jest"],
+  },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: ["/node_modules/", "\\.pnp\\.[^\\/]+$"],
+  transformIgnorePatterns: [
+    // "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+    // "node_modules/(?!camelcase-keys)/",
+    "<rootDir>/node_modules/(?!camelcase-keys)/",
+    // "/node_modules/",
+  ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,
